@@ -14,3 +14,6 @@ elf_magic db 0x7f, 0x45, 0x4c, 0x46, 0x2, 0x0
 	process_dir db `/proc`, 0x0
 	process_status db `status`, 0x0
 	process db `\tcat\n`, 0x0, `\tgdb\n`, 0x0, 0x0
+
+global _params
+_params db 0 ; 0 = no params, 1 = params

@@ -2,6 +2,16 @@
 %include "data.inc"
 
 section .text
+	global _ft_concat_path
+	global _ft_isnum
+	global _ft_strlen
+	global _ft_memcmp
+	global _ft_memmem
+	global _ft_strcmp
+	global _ft_strcpy
+	global _ft_memcpy
+
+
 
 _ft_concat_path: ;(string rdi, string rsi) -> rdi is dest, must be in stack or mmaped region
 	push rdx

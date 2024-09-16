@@ -12,7 +12,7 @@ section .text
     extern _pack_start
     extern length
     extern _ft_memcpy
-    extern _ft_memcmp
+	extern _ft_memcmp
 	global _infect_file
 
 _infect_file: ; (string rdi, stat rsi)
