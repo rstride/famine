@@ -1,42 +1,68 @@
-CC = gcc
-AS = as
-CFLAGS = -Wall -Wextra -Werror -g
-ASFLAGS = -g
+SHELL=/bin/bash
 
-TARGET = famine
+# COLORS #
+_RED		=	\e[31m
+_GREEN		=	\e[32m
+_YELLOW		=	\e[33m
+_BLUE		=	\e[34m
+_END		=	\e[0m
 
-C_SRCS = $(wildcard src/*.c)
-ASM_SRCS = $(wildcard src/*.s)
+# COMPILATION #
+FLAGS	=	-f elf64
 
-C_OBJS = $(C_SRCS:.c=.o)
-ASM_OBJS = $(ASM_SRCS:.s=.o)
-OBJS = $(C_OBJS) $(ASM_OBJS)
+# DIRECTORIES #
+DIR_SRCS		=	./src/
+DIR_INCLUDES	=	./inc/
+DIR_OBJS		=	./compiled_srcs/
 
-all: $(TARGET)
+# FILES #
+SRCS	=	infect.s inject.s main.s pack.s search.s utils.s
 
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+NAME 	=	Famine
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+#ifeq ($(BUILD),debug)
+#	FLAGS	+=	-DDEBUG
+#	DIR_OBJS		=	./debug-compiled_srcs/
+#	NAME			=	./debug-Famine
+#endif
 
-%.o: %.s
-	$(AS) $(ASFLAGS) $< -o $@
+# COMPILED_SOURCES #
+OBJS 		=	$(SRCS:%.s=$(DIR_OBJS)%.o)
 
+## RULES ##
+all:		$(NAME)
+
+fsociety:	FLAGS += -DFSOCIETY
+fsociety:	all
+
+# VARIABLES RULES #
+
+$(NAME):	$(OBJS)
+			@printf "\033[2K\r$(_BLUE) All files compiled into '$(DIR_OBJS)'. $(_END)✅\n"
+			@ld -o $@ $(OBJS)
+			@printf "\033[2K\r$(_GREEN) Executable '$(NAME)' created. $(_END)✅\n"
+
+# COMPILED_SOURCES RULES #
+$(OBJS):	| $(DIR_OBJS)
+
+$(DIR_OBJS)%.o: $(DIR_SRCS)%.s
+			@printf "\033[2K\r $(_YELLOW)Compiling $< $(_END)⌛ "
+			@nasm $(FLAGS) -I $(DIR_INCLUDES) -o $@ $<
+
+$(DIR_OBJS):
+			@mkdir -p $(DIR_OBJS)
+
+# MANDATORY PART #
 clean:
-	rm -f $(OBJS) $(TARGET)
+			@rm -rf $(DIR_OBJS)
+			@printf "\033[2K\r$(_RED) '"$(DIR_OBJS)"' has been deleted. $(_END)🗑️\n"
 
-test: $(TARGET)
-	./test/script.sh
+fclean:		clean
+			@rm -rf $(NAME)
+			@printf "\033[2K\r$(_RED) '"$(NAME)"' has been deleted. $(_END)🗑️\n"
 
-test_count_infected: $(TARGET)
-	./test/count_infected.sh
+re:			fclean all
 
-test_poc_packer: $(TARGET)
-	$(CC) -o test/poc_packer test/poc_packer.c
-	./test/poc_packer
+# PHONY #
 
-clean_tests:
-	rm -f test/poc_packer
-
-.PHONY: all clean test test_count_infected test_poc_packer clean_tests
+.PHONY:		all clean fclean re

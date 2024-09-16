@@ -2,9 +2,12 @@
 %include "data.inc"
 
 section .text
-
-_global _pack
-_global _unpack
+	global _pack
+	global _unpack
+	extern _ft_memmem
+	extern _ft_memcpy
+	extern _pack_start
+	extern _eof
 
 _pack: ;(void *rdi) -> ret size + fill rdi
 	push r8

