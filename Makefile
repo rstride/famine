@@ -34,3 +34,11 @@ fclean: clean
 	$(RM) $(TARGET)
 
 re: fclean all
+
+test: re
+	gcc ./test/hello.c -o /tmp/test/hello
+	strings /tmp/test/hello | grep "hello"
+	./famine
+	strings /tmp/test/hello | grep "famine"
+
+.PHONY: all clean fclean re test
