@@ -4,7 +4,7 @@ CC = gcc
 CFLAGS = -Werror -Wextra -Werror
 
 AS = nasm
-ASFLAGS = -f elf64
+ASFLAGS = -f elf64 -I ./inc/
 
 LDFLAGS = -dynamic-linker /lib64/ld-linux-x86-64.so.2 -lc
 
